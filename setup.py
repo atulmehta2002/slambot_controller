@@ -23,4 +23,4 @@ setup(
             "slambot_keyboard_controller = slambot_controller.slambot_keyboard_controller:main"
         ],
     },
-)
+) 
