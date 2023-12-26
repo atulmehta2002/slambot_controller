@@ -31,9 +31,9 @@ class KeyboardSubscriber(Node):
         print(f"- Angular Z: {angular_z:.2f}")
 
         # Format data as a string and send over serial
-        data_to_send = f"Linear_X: {linear_x:.2f} ||Angular_Z: {angular_z:.2f} \n".encode()  # Add newline for clarity
+        data_to_send = f"{linear_x:.2f}  {angular_z:.2f}\n".encode()  # Add newline for clarity
         self.ser.write(data_to_send)
-        print(f"Data sent over serial: Linear X: {linear_x:.2f},Angular Z: {angular_z:.2f}\n")
+        print(f"Data sent over serial:{linear_x:.2f}  {angular_z:.2f}\n")
 
 def main(args=None):
     rclpy.init(args=args)
