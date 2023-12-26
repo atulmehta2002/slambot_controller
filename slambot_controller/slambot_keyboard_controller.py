@@ -29,7 +29,7 @@ class KeyboardSubscriber(Node):
         print("Received keyboard input:")
         print(f"- Linear X: {linear_x:.2f}")
         print(f"- Angular Z: {angular_z:.2f}")
-
+ 
         # Format data as a string and send over serial
         data_to_send = f"{linear_x:.2f}  {angular_z:.2f}\n".encode()  # Add newline for clarity
         self.ser.write(data_to_send)
