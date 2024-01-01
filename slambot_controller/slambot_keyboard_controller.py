@@ -13,7 +13,7 @@ class KeyboardSubscriber(Node):
 
         # Serial communication configuration
         self.port = '/dev/ttyUSB0'  # Replace with your actual serial port
-        self.baudrate = 250000  # Adjust to match your device's baud rate
+        self.baudrate = 115200  # Adjust to match your device's baud rate
 
         try:
             self.ser = serial.Serial(self.port, self.baudrate)
@@ -21,9 +21,6 @@ class KeyboardSubscriber(Node):
         except serial.SerialException as e:
             print("Error opening serial port:", e)
             exit()
-        # Store previous values for comparison
-        self.prev_linear_x = None
-        self.prev_angular_z = None
 
     def twist_callback(self, msg):
         linear_x = msg.linear.x
@@ -33,15 +30,10 @@ class KeyboardSubscriber(Node):
         print(f"- Linear X: {linear_x:.2f}")
         print(f"- Angular Z: {angular_z:.2f}")
  
-        # Check for changes in variables before sending serial data
-       if linear_x != self.prev_linear_x or angular_z != self.prev_angular_z:
-           data_to_send = f"{linear_x:.2f} {angular_z:.2f}\n".encode()
-           self.ser.write(data_to_send)
-           print(f"Data sent over serial: {linear_x:.2f} {angular_z:.2f}\n")
-
-           # Update previous values for next comparison
-           self.prev_linear_x = linear_x
-           self.prev_angular_z = angular_z
+        # Format data as a string and send over serial
+        data_to_send = f"{linear_x:.2f}  {angular_z:.2f}\n".encode()  # Add newline for clarity
+        self.ser.write(data_to_send)
+        print(f"Data sent over serial:{linear_x:.2f}  {angular_z:.2f}\n")
 
 def main(args=None):
     rclpy.init(args=args)
