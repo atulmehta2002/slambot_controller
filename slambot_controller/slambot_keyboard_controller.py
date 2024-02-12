@@ -9,7 +9,7 @@ class KeyboardSubscriber(Node):
 
     def __init__(self):
         super().__init__('slambot_keyboard_controller')
-        self.subscription = self.create_subscription(Twist, '/cmd_vel', self.twist_callback, 3)
+        self.subscription = self.create_subscription(Twist, '/diffbot_base_controller/cmd_vel_unstamped', self.twist_callback, 3)
 
         # Serial communication configuration
         self.port = '/dev/ttyUSB0'  # Replace with your actual serial port
