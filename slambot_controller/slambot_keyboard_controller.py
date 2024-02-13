@@ -12,7 +12,9 @@ class KeyboardSubscriber(Node):
         self.subscription = self.create_subscription(Twist, '/diffbot_base_controller/cmd_vel_unstamped', self.twist_callback, 3)
 
         # Serial communication configuration
-        self.port = '/dev/serial/by-path/pci-0000:06:00.3-usb-0:2:1.0-port0'  # Replace with your actual serial port
+        self.port = '/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0-port0'  # Replace with your actual serial port
+        #self.port = '/dev/serial/by-path/pci-0000:06:00.3-usb-0:2:1.0-port0'                            # Replace with your actual serial port    
+        
         self.baudrate = 115200  # Adjust to match your device's baud rate
 
         try:
