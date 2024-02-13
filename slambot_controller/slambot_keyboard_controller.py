@@ -23,17 +23,56 @@ class KeyboardSubscriber(Node):
             exit()
 
     def twist_callback(self, msg):
-        linear_x = msg.linear.x
-        angular_z = msg.angular.z
+        raw_linear_x = int((msg.linear.x)*500)
+        raw_angular_z = int((msg.angular.z)*250)
+        
+        if raw_linear_x>250:              #limiting linear_x values in range [-500, 500]
+            raw_linear_x=250
+        elif raw_linear_x<-250:
+            raw_linear_x=-250
 
-        print("Received keyboard input:")
-        print(f"- Linear X: {linear_x:.2f}")
-        print(f"- Angular Z: {angular_z:.2f}")
+        if raw_angular_z>250:             #limiting angular_z values in range [-500, 500]
+            raw_angular_z=250
+        elif raw_angular_z<-250:
+            raw_angular_z=-250
+
+        if ((raw_linear_x>0) & (raw_linear_x < 10)):
+            linear_x = f"   {raw_linear_x}"
+        elif ((raw_linear_x>=10) & (raw_linear_x < 100)):
+            linear_x = f"  {raw_linear_x}"
+        elif (raw_linear_x>=100):
+            linear_x = f" {raw_linear_x}"
+        elif ((raw_linear_x<0) & (raw_linear_x > -10)):
+            linear_x = f"  {raw_linear_x}"
+        elif ((raw_linear_x<=-10) & (raw_linear_x > -100)):
+            linear_x = f" {raw_linear_x}"
+        elif ((raw_linear_x<=-100)):
+            linear_x = f"{raw_linear_x}"
+        else:
+            linear_x = f"   0"
+
+        if ((raw_angular_z>0) & (raw_angular_z < 10)):
+            angular_z = f"   {raw_angular_z}"
+        elif ((raw_angular_z>=10) & (raw_angular_z < 100)):
+            angular_z = f"  {raw_angular_z}"
+        elif (raw_angular_z>=100):
+            angular_z = f" {raw_angular_z}"
+        elif ((raw_angular_z<0) & (raw_angular_z > -10)):
+            angular_z = f"  {raw_angular_z}"
+        elif ((raw_angular_z<=-10) & (raw_angular_z > -100)):
+            angular_z = f" {raw_angular_z}"
+        elif ((raw_angular_z<=-100)):
+            angular_z = f"{raw_angular_z}"
+        else:
+            angular_z = f"   0"
+
+        # print(f"Received: linear_x : {linear_x} angular_z: {angular_z}" )
  
         # Format data as a string and send over serial
-        data_to_send = f"{linear_x:.2f}   {angular_z:.2f}\n".encode()  # Add newline for clarity
+        data_to_send = f"{linear_x} | {angular_z}\n".encode()  # Add newline for clarity
         self.ser.write(data_to_send)
-        print(f"Data sent over serial:{linear_x:.2f}  {angular_z:.2f}\n")
+        print(f"Data sent over serial:{data_to_send}")
+
 
 def main(args=None):
     rclpy.init(args=args)
